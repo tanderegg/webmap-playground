@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  next-app:
+    container_name: next-app
+    build:
+      context: ./app
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./app/src:/app/src
+      - ./app/public:/app/public
+      - .:/workspace:cached
+    restart: always
+    ports:
+      - 3000:3000
+#    networks:
+#      - my_network
+
+#networks:
+#  my_network:
+#    external: true
