@@ -4,6 +4,7 @@
   "service": "next-app",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "customizations":{
     "vscode": {
       "settings": {
