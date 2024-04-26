@@ -5,6 +5,8 @@ import DeckGL from "@deck.gl/react";
 import {GeoJsonLayer} from '@deck.gl/layers';
 import DecodedBitmapLayer from '../layers/decoded-bitmap-layer'
 import {TileLayer, TileLayerPickingInfo} from '@deck.gl/geo-layers';
+import {PMTilesSource, PMTilesMetadata} from '@loaders.gl/pmtiles';
+import {TileSourceLayer} from '@deck.gl-community/layers'
 import {MapView} from '@deck.gl/core';
 
 import Map from "react-map-gl";
@@ -57,8 +59,8 @@ export default function MyMap() {
   }
 
   const [viewState, setViewState] = useState({
-    longitude: 20,
-    latitude: 0,
+    longitude: -1.7138671,
+    latitude: 42.0003167,
     zoom: 4,
     pitch: 0,
     bearing: 0
@@ -79,9 +81,7 @@ export default function MyMap() {
     getLineWidth: 1
   });
 
-  let [layers, setLayers] = useState([
-      worldLayer
-  ]);
+  let [layers, setLayers] = useState([]);
 
   const style = {
     "version": 8,
@@ -106,6 +106,19 @@ export default function MyMap() {
   const data = [
     {sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}
   ];
+
+  let euroCropLayerSource = new PMTilesSource({
+    url: 'https://s3.us-west-2.amazonaws.com/us-west-2.opendata.source.coop/cholmes/eurocrops/eurocrops-all.pmtiles',
+    attributions: ['https://beta.source.coop/repositories/cholmes/eurocrops/description/'],
+    loadOptions: {tilejson: {maxValues: 10}}
+  });
+
+  console.log("PMTileSource props: " + JSON.stringify(euroCropLayerSource.props, null, 2));
+
+  const euroCropLayer = new TileSourceLayer({
+    id: 'EuroCropLayer',
+    tileSource: euroCropLayerSource
+  });
 
   useEffect(() => {
     const setTCLLayer = async () => {
@@ -173,10 +186,15 @@ export default function MyMap() {
         },
         pickable: true
       });
-  
-      setLayers([tclLayer]);
+
+      setLayers([tclLayer, euroCropLayer]);
     }
 
+    const displayEuroCropsLayer = async () => {
+      console.log("PMTileSource metadata: " + JSON.stringify(await euroCropLayerSource.metadata, null, 2));
+    }
+
+    displayEuroCropsLayer().catch(console.error);
     setTCLLayer().catch(console.error);
   }, [viewState]);
 
