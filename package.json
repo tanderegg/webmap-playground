@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@deck.gl-community/layers": "^9.0.0-alpha.1",
-    "@loaders.gl/pmtiles": "^4.2.1"
-  }
-}
