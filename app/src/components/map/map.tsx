@@ -2,16 +2,19 @@ import React from 'react';
 import { useState, useEffect } from "react";
 
 import DeckGL from "@deck.gl/react";
-import {GeoJsonLayer} from '@deck.gl/layers';
-import DecodedBitmapLayer from '../layers/decoded-bitmap-layer'
-import {TileLayer, TileLayerPickingInfo} from '@deck.gl/geo-layers';
+import {MapViewState} from "@deck.gl/core";
+import DecodedBitmapLayer from '../../layers/decoded-bitmap-layer'
+import {TileLayer, TileLayerPickingInfo, GeoBoundingBox} from '@deck.gl/geo-layers';
 import {PMTilesSource, PMTilesMetadata} from '@loaders.gl/pmtiles';
-import {TileSourceLayer} from '@deck.gl-community/layers'
-import {MapView} from '@deck.gl/core';
+
+import type {GeoJsonLayer} from '@deck.gl/layers';
 
 import Map from "react-map-gl";
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+
+// @ts-ignore
+import {TileSourceLayer} from '@deck.gl-community/layers'
 
 /*const callApiDatasetMetadata = async (uuid) => {
   // fetch the API endpoint (GET request)
@@ -23,7 +26,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
   return await response.json();
 }*/
 
-export default function MyMap() {
+export default function WRIMap() {
 
   const decodeFunctions = {
     treeCoverLoss: `
@@ -58,7 +61,7 @@ export default function MyMap() {
     `
   }
 
-  const [viewState, setViewState] = useState({
+  const [viewState, setViewState] = useState<MapViewState>({
     longitude: -1.7138671,
     latitude: 42.0003167,
     zoom: 4,
@@ -69,7 +72,7 @@ export default function MyMap() {
   //let [tclMetadata, setTclMetadata] = useState(null);
   //let metadata = null;
 
-  const worldLayer = new GeoJsonLayer({
+  /*const worldLayer = new GeoJsonLayer({
     id: 'world-layer',
     data: '../world.geo.json',
     opacity: 0.5,
@@ -79,30 +82,30 @@ export default function MyMap() {
     extruded: true,
     getLineColor: d => colorToRGBArray(d.properties.mapColor8),
     getLineWidth: 1
-  });
+  });*/
 
   let [layers, setLayers] = useState([]);
 
-  const style = {
-    "version": 8,
-    "sources": {
-      "osm": {
-        "type": "raster",
-        "tiles": ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
-        "tileSize": 256,
-        "attribution": "&copy; OpenStreetMap Contributors",
-        "maxzoom": 19
+  const style = `{
+    version: 8,
+    sources: {
+      osm: {
+        type: "raster",
+        tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        attribution: "&copy; OpenStreetMap Contributors",
+        maxzoom: 19
       }
     },
-    "layers": [
+    layers: [
       {
-        "id": "osm",
-        "type": "raster",
-        "source": "osm" // This must match the source key above
+        id: "osm",
+        type: "raster",
+        source: "osm" // This must match the source key above
       }
     ]
-  };
-
+  }`;
+  
   const data = [
     {sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}
   ];
@@ -113,7 +116,7 @@ export default function MyMap() {
     loadOptions: {tilejson: {maxValues: 10}}
   });
 
-  console.log("PMTileSource props: " + JSON.stringify(euroCropLayerSource.props, null, 2));
+  //console.log("PMTileSource props: " + JSON.stringify(euroCropLayerSource.props, null, 2));
 
   const euroCropLayer = new TileSourceLayer({
     id: 'EuroCropLayer',
@@ -131,7 +134,7 @@ export default function MyMap() {
       }
     
       const metadata = await response.json();
-      console.log("Response JSON: " + JSON.stringify(metadata, null, 2));
+      //console.log("Response JSON: " + JSON.stringify(metadata, null, 2));
       
       const layerConfig = metadata['data']['attributes']['layer'][0]['attributes']['layerConfig'];
       const defaultParams = layerConfig['params_config'];
@@ -163,8 +166,8 @@ export default function MyMap() {
         'endYear': endYear
       };
 
-      console.log("LayerConfig: " + JSON.stringify(layerConfig, null, 2));
-      console.log("URL: " + url);
+      //console.log("LayerConfig: " + JSON.stringify(layerConfig, null, 2));
+      //console.log("URL: " + url);
 
       const tclLayer = new TileLayer({
         id: 'TCLLayer',
@@ -187,21 +190,26 @@ export default function MyMap() {
         pickable: true
       });
 
-      setLayers([tclLayer, euroCropLayer]);
+      setLayers([]);
+      //setLayers([tclLayer, euroCropLayer]);
     }
 
     const displayEuroCropsLayer = async () => {
-      console.log("PMTileSource metadata: " + JSON.stringify(await euroCropLayerSource.metadata, null, 2));
+      //console.log("PMTileSource metadata: " + JSON.stringify(await euroCropLayerSource.metadata, null, 2));
     }
 
     displayEuroCropsLayer().catch(console.error);
     setTCLLayer().catch(console.error);
   }, [viewState]);
 
+  const onViewStateChange = ({ viewState }) => {
+    setViewState(viewState);
+  }
+
   return (
     <DeckGL 
       viewState={viewState}
-      onViewStateChange={({ viewState }) => setViewState(viewState)}
+      onViewStateChange={onViewStateChange}
       controller={true}
       layers={layers}
     >

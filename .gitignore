@@ -1,1 +1,14 @@
+# Python / Flask
+api/.venv
+__pycache__
+
+# Node / Typescript
 node_modules
+
+# Next
+.next/
+
+# Don't check in TIF, PBF, XML files, download them
+files/*.tif
+files/*.pbf
+files/*.xml

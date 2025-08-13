@@ -6,22 +6,24 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "latest",
-    "maplibre-gl": "2.4.0",
-    "deck.gl": "9.0.10",
+    "@chakra-ui/react": "^3.8.0",
+    "@deck.gl-community/layers": "9.0.0-alpha.1",
+    "@emotion/styled": "^11.14.0",
     "@loaders.gl/i3s": "4.2.0",
     "@loaders.gl/pmtiles": "4.2.0",
-    "@deck.gl-community/layers": "9.0.0-alpha.1",
+    "@worldresources/wri-design-systems": "latest",
+    "deck.gl": "9.0.10",
+    "maplibre-gl": "2.4.0",
+    "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-map-gl": "7.0.19"
-
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "typescript": "^4.9.3",
-    "eslint": "latest"
+    "eslint": "latest",
+    "typescript": "^4.9.3"
   }
 }

@@ -16,7 +16,7 @@ const defaultProps: DefaultProps<DecodedBitmapLayerProps> = {
 };
 
 /** All properties supported by DecodedBitmapLayer. */
-export type DecodedBitmapLayerProps<DataT = unkown> = 
+export type DecodedBitmapLayerProps<DataT = unknown> = 
   _DecodedBitmapLayerProps<DataT> & LayerProps;
 
 /** Properties added by DecodedBitmapLayer */

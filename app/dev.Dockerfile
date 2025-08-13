@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN apk add git
+RUN apk add git openssh
 RUN \
   if [ -f package-lock.json ]; then npm ci; \
   else echo "Warning: Lockfile not found. It is recommended to commit lockfiles to version control." && npm install; \
