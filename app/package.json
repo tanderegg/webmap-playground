@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^3.8.0",
-    "@deck.gl-community/layers": "9.0.0-alpha.1",
+    "@deck.gl-community/layers": "^9.1.1",
     "@emotion/styled": "^11.14.0",
     "@loaders.gl/i3s": "4.2.0",
     "@loaders.gl/pmtiles": "4.2.0",

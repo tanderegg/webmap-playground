@@ -5,7 +5,7 @@ import React from 'react';
 //import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
 //import { NavigationRail, Footer } from '@worldresources/wri-design-systems'
 
-import WRIMap from "../components/map";
+import { WRIMap } from "@/components/map";
 
 import styles from "../styles/Home.module.css";
 

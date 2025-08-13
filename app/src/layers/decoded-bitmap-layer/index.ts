@@ -38,7 +38,7 @@ type _DecodedBitmapLayerProps<DataT> = {
   zoom?: number;
 }
 
-export default class DecodedBitmapLayer<ExtraPropsT extends {} = {}> extends BitmapLayer<
+export default class DecodedBitmapLayer extends BitmapLayer<
   ExtraPropsT & Required<_DecodedBitmapLayerProps>> 
   {
   static layerName = 'DecodedBitmapLayer';
