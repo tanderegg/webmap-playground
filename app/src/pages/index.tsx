@@ -7,13 +7,13 @@ import React from 'react';
 
 import { WRIMap } from "@/components/map";
 
-import styles from "../styles/Home.module.css";
+import styles from "@/styles/Home.module.css";
 
 export default function Home() {
   return (
       <div className={styles.container}>
         <Head>
-          <title>PMTiles Playground</title>
+          <title>Webmap Playground</title>
         </Head>
 
         <header className={styles.header}>

@@ -35,6 +35,16 @@ const decodeFunctions = {
   `
 }
 
+/*const callApiDatasetMetadata = async (uuid) => {
+  // fetch the API endpoint (GET request)
+  const response = await 
+  if (!response.ok) {
+    throw new Error('RW API Error! status: : ${response.status}')
+  }
+  console.log("Successful RW API Call.")
+  return await response.json();
+}*/
+
 const getTclLayer = async (viewState: MapViewState) => {
   const tclID = 'b584954c-0d8d-40c6-859c-f3fdf3c2c5df';
     

@@ -1,12 +1,8 @@
 import React, {useState, useEffect, useCallback, useRef} from "react";
 
-//import {DeckGL} from "@deck.gl/react";
-
 import {MapViewState, DeckProps} from "@deck.gl/core";
 import {MapboxOverlay} from "@deck.gl/mapbox";
-import {createDataSource} from '@loaders.gl/core';
 import {PMTilesSource} from '@loaders.gl/pmtiles';
-
 import {GeoJsonLayer} from '@deck.gl/layers';
 
 import {
@@ -24,17 +20,10 @@ import type {CircleLayer} from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 
+// Custom Layer Types
 import {TileSourceLayer} from '@/layers/tile-source-layer'
 
-/*const callApiDatasetMetadata = async (uuid) => {
-  // fetch the API endpoint (GET request)
-  const response = await 
-  if (!response.ok) {
-    throw new Error('RW API Error! status: : ${response.status}')
-  }
-  console.log("Successful RW API Call.")
-  return await response.json();
-}*/
+// Basemap style
 const style = {
   version: 8,
   sources: {
@@ -55,6 +44,7 @@ const style = {
   ]
 };
 
+// PowerWatch Dataset Style
 const powerwatchStyle: CircleLayer = {
   id: "powerwatch-layer",
   type: "circle",
@@ -66,30 +56,13 @@ const powerwatchStyle: CircleLayer = {
       ['linear'],
       ["zoom"],
       0,
-      [
-        "+",
-        0.1,
-        [
-          "/",
-          [
-            "sqrt",
-            ["/", ["get", "capacity_mw"], ["pi"]]
-          ],
-          20
-        ]
+      [ "+", 0.1,
+        [ "/", ["sqrt", ["/", ["get", "capacity_mw"], ["pi"]]], 20 ]
       ],
       12,
       [
-        "+",
-        4,
-        [
-          "/",
-          [
-            "sqrt",
-            ["/", ["get", "capacity_mw"], ["pi"]]
-          ],
-          3
-        ]
+        "+", 4,
+        [ "/", [ "sqrt", [ "/", [ "get", "capacity_mw" ], ["pi"] ] ], 3 ]
       ]
     ],
     "circle-color": [
@@ -110,22 +83,26 @@ const powerwatchStyle: CircleLayer = {
   }
 }
 
+// Test CQL2 query
 const cql2Query = `country = 'FRA'`
+
+// No idea what this was for
 const data = [
   {sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}
 ];
 
+// Main "WRI Map" component
 const WRIMap = () => {
   const mapRef = useRef(null);
   const [plantPopupInfo, setPlantPopupInfo] = useState(null);
   const [layers, setLayers] = useState([]);
   const [cursor, setCursor] = useState<string>('auto');
 
-  /*const [viewState, setViewState] = useState<MapViewState>({
+  const [viewState, setViewState] = useState<MapViewState>({
     longitude: -1.7138671,
     latitude: 42.0003167,
     zoom: 4
-  });*/
+  });
 
   const mapClick = useCallback((e) => {
     const feature = e.features && e.features[0];
@@ -145,11 +122,12 @@ const WRIMap = () => {
     const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
     overlay.setProps(props);
     return null;
-  }
+  };
+
   //let [tclMetadata, setTclMetadata] = useState(null);
   //let metadata = null;
 
-  /*const worldLayer = new GeoJsonLayer({
+  const worldLayer = new GeoJsonLayer({
     id: 'world-layer',
     data: '../world.geo.json',
     opacity: 0.5,
@@ -157,49 +135,33 @@ const WRIMap = () => {
     filled: true,
     pickable: true,
     extruded: true,
-    getLineColor: d => colorToRGBArray(d.properties.mapColor8),
+    getLineColor: d => d.properties.mapColor8,
     getLineWidth: 1
-  });*/
+  });
 
-  /*let euroCropLayerSource = new PMTilesSource({
+  let euroCropLayerSource = new PMTilesSource({
     url: 'https://s3.us-west-2.amazonaws.com/us-west-2.opendata.source.coop/cholmes/eurocrops/eurocrops-all.pmtiles',
     attributions: ['https://beta.source.coop/repositories/cholmes/eurocrops/description/'],
     loadOptions: {tilejson: {maxValues: 10}}
-  });*/
+  });
 
-
-  // Might be a bug in loaders.gl, doesn't recognize type properly: https://github.com/visgl/loaders.gl/blob/v4.3.4/modules/core/src/lib/api/create-data-source.ts#L20
-  /*const euroCropLayerSource = createDataSource(
-    'https://s3.us-west-2.amazonaws.com/us-west-2.opendata.source.coop/cholmes/eurocrops/eurocrops-all.pmtiles',
-    [PMTilesSource],
-    {
-      attributions: ['https://beta.source.coop/repositories/cholmes/eurocrops/description/'],
-      loadOptions: {tilejson: {maxValues: 10}}
-    }
-  );*/
-
-  //console.log("PMTileSource props: " + JSON.stringify(euroCropLayerSource.props, null, 2));
-
-  /*const euroCropLayer = new TileSourceLayer({
+  const euroCropLayer = new TileSourceLayer({
     id: 'EuroCropLayer',
     tileSource: euroCropLayerSource
-  });*/
+  });
 
-  /*useEffect(() => {
-    const updateLayers = async () => {
+  useEffect(() => {
+    const updateDeckGLLayers = async () => {
       //tclLayer = await getTCLLayer()
-      setLayers([]);
-      //setLayers([tclLayer, euroCropLayer]);
+      setLayers([
+        // worldLayer,
+        // tclLayer, - Doesn't work
+        // euroCropLayer - Causes crashes
+      ]);
     }
 
-    const displayEuroCropsLayer = async () => {
-      //console.log("PMTileSource metadata: " + JSON.stringify(await euroCropLayerSource.metadata, null, 2));
-    }
-
-    displayEuroCropsLayer().catch(console.error);
-    updateLayers().catch(console.error);
+    updateDeckGLLayers().catch(console.error);
   }, [viewState]);
-  */
 
   /*const onViewStateChange = ({ viewState }) => {
     setViewState(viewState);
@@ -207,13 +169,10 @@ const WRIMap = () => {
 
   return (
     <Map
-      initialViewState={{
-        longitude: -1.7138671,
-        latitude: 42.0003167,
-        zoom: 4
-      }}
+      ref={mapRef}
+      initialViewState={viewState}
       mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-      cursor={cursor}
+      cursor={cursor} // Redundant because DeckGL owns the mouse, but needed if I remove the DeckGLOverlay
       onClick={mapClick}
       onMouseEnter={mouseEnter}
       onMouseLeave={mouseLeave}
@@ -261,12 +220,17 @@ const WRIMap = () => {
       >
         <Layer {...powerwatchStyle} />
       </Source>
+
+      <DeckGLOverlay
+        getCursor={() => cursor}
+        layers={layers}
+        interleaved="true"
+      />
     </Map>
   );
 }
 
 // Currently prevents cursor change for some reason?
-// <DeckGLOverlay layers={layers} interleaved="false" />
 
 export {
   WRIMap,
