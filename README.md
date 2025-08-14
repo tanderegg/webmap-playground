@@ -1,5 +1,5 @@
-# pmtiles-playground
-Experiments with using PM Tiles
+# webmap-playground
+Experiments with using PM Tiles, DeckGL, ReactMapGL with Maplibre, etc.
 
 # Experiment with H3
 https://github.com/kshitijrajsharma/raster-analysis-using-h3?tab=readme-ov-file

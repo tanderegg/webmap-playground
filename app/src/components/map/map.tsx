@@ -86,11 +86,6 @@ const powerwatchStyle: CircleLayer = {
 // Test CQL2 query
 const cql2Query = `country = 'FRA'`
 
-// No idea what this was for
-const data = [
-  {sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}
-];
-
 // Main "WRI Map" component
 const WRIMap = () => {
   const mapRef = useRef(null);
