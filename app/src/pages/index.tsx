@@ -18,7 +18,7 @@ export default function Home() {
 
         <header className={styles.header}>
           <h1 className={styles.title}>
-            Welcome to the PMTiles Playground!
+            Welcome to the Webmap Playground!
           </h1>
         </header>
 

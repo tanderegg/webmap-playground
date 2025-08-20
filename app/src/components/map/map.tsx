@@ -16,7 +16,7 @@ import {
   GeolocateControl,
   Popup
 } from "react-map-gl/maplibre";
-import type {CircleLayer} from 'react-map-gl/maplibre';
+import type {CircleLayer, LineLayer} from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 
@@ -82,6 +82,17 @@ const powerwatchStyle: CircleLayer = {
     "circle-opacity": 0.7
   }
 }
+
+// GADM Style
+const gadmStyle: LineLayer = {
+  id: "gadm-layer",
+  type: "line",
+  source: "gadm",
+  "source-layer": "default",
+  paint: {
+    "line-color": "#FF0000"
+  }
+};
 
 // Test CQL2 query
 const cql2Query = `country = 'FRA'`
@@ -155,7 +166,9 @@ const WRIMap = () => {
       ]);
     }
 
-    updateDeckGLLayers().catch(console.error);
+    if (layers.length === 0) {
+      updateDeckGLLayers().catch(console.error);
+    }
   }, [viewState]);
 
   /*const onViewStateChange = ({ viewState }) => {
@@ -216,10 +229,18 @@ const WRIMap = () => {
         <Layer {...powerwatchStyle} />
       </Source>
 
+      <Source
+        id="gadm"
+        type="vector"
+        tiles={["https://eoapi.datalab.foo/vector/collections/public.gadm/tiles/WebMercatorQuad/{z}/{x}/{y}?simplify=50000"]}
+      >
+        <Layer {...gadmStyle} />
+      </Source>
+
       <DeckGLOverlay
         getCursor={() => cursor}
         layers={layers}
-        interleaved="true"
+        interleaved
       />
     </Map>
   );
