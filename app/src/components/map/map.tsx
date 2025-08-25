@@ -232,7 +232,7 @@ const WRIMap = () => {
       <Source
         id="gadm"
         type="vector"
-        tiles={["https://eoapi.datalab.foo/vector/collections/public.gadm/tiles/WebMercatorQuad/{z}/{x}/{y}?simplify=50000"]}
+        tiles={["https://eoapi.datalab.foo/vector/collections/public.gadm/tiles/WebMercatorQuad/{z}/{x}/{y}"]}
       >
         <Layer {...gadmStyle} />
       </Source>
