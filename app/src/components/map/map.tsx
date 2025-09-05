@@ -16,7 +16,7 @@ import {
   GeolocateControl,
   Popup
 } from "react-map-gl/maplibre";
-import type {CircleLayer, LineLayer} from 'react-map-gl/maplibre';
+import { CircleLayer, LineLayer } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 
@@ -145,7 +145,7 @@ const WRIMap = () => {
     getLineWidth: 1
   });
 
-  let euroCropLayerSource = new PMTilesSource({
+  /*let euroCropLayerSource = new PMTilesSource({
     url: 'https://s3.us-west-2.amazonaws.com/us-west-2.opendata.source.coop/cholmes/eurocrops/eurocrops-all.pmtiles',
     attributions: ['https://beta.source.coop/repositories/cholmes/eurocrops/description/'],
     loadOptions: {tilejson: {maxValues: 10}}
@@ -154,7 +154,7 @@ const WRIMap = () => {
   const euroCropLayer = new TileSourceLayer({
     id: 'EuroCropLayer',
     tileSource: euroCropLayerSource
-  });
+  });*/
 
   useEffect(() => {
     const updateDeckGLLayers = async () => {
@@ -245,8 +245,6 @@ const WRIMap = () => {
     </Map>
   );
 }
-
-// Currently prevents cursor change for some reason?
 
 export {
   WRIMap,
